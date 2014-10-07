@@ -1,14 +1,7 @@
 package rental;
 
 import java.rmi.RemoteException;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -150,7 +143,24 @@ public class CarRentalCompany implements ICarRentalCompany {
 	}
 
     @Override
-    public Collection<Reservation> getAllReservations(String client) throws RemoteException {
-        throw new UnsupportedOperationException("TODO");
+    public List<Reservation> getAllReservations(String client) throws RemoteException {
+        List<Reservation> reservations = new ArrayList<Reservation>();
+        for ( Car car : this.cars){
+            for (Reservation reservation : car.getReservations()){
+                if (reservation.getCarRenter().equals(client))
+                    reservations.add(reservation);
+            }
+        }
+        return  reservations;
+    }
+
+    @Override
+    public int getNumberOfReservationsForCarType(String carType) throws RemoteException {
+        List<Reservation> reservations = new ArrayList<Reservation>();
+        for ( Car car : this.cars){
+            if (car.getType().getName().equalsIgnoreCase(carType))
+                reservations.addAll(car.getReservations());
+        }
+        return reservations.size();
     }
 }

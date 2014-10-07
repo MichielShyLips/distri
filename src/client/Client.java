@@ -1,13 +1,16 @@
 package client;
 
-import java.util.Date;
-import java.util.List;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.*;
 
-import rental.Quote;
-import rental.Reservation;
+import rental.*;
 
 public class Client extends AbstractScriptedSimpleTest {
-	
+
+    private ICarRentalCompany company ;
 	/********
 	 * MAIN *
 	 ********/
@@ -19,16 +22,18 @@ public class Client extends AbstractScriptedSimpleTest {
 		// An example reservation scenario on car rental company 'Hertz' would be...
 		Client client = new Client("simpleTrips", carRentalCompanyName);
 		client.run();
+
+        System.setSecurityManager(null);
 	}
 	
 	/***************
 	 * CONSTRUCTOR *
 	 ***************/
 	
-	public Client(String scriptFile, String carRentalCompanyName) {
+	public Client(String scriptFile, String carRentalCompanyName) throws RemoteException,NotBoundException{
 		super(scriptFile);
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
+        Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+        this.company = (ICarRentalCompany) registry.lookup(carRentalCompanyName);
 	}
 	
 	/**
@@ -44,8 +49,12 @@ public class Client extends AbstractScriptedSimpleTest {
 	 */
 	@Override
 	protected void checkForAvailableCarTypes(Date start, Date end) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
+        Collection<CarType> available = this.company.getAvailableCarTypes(start, end);
+
+        for (CarType carType : available){
+            System.out.println(carType);
+        }
+
 	}
 
 	/**
@@ -67,8 +76,7 @@ public class Client extends AbstractScriptedSimpleTest {
 	@Override
 	protected Quote createQuote(String clientName, Date start, Date end,
 			String carType) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
+		return this.company.createQuote(new ReservationConstraints(start, end, carType), clientName );
 	}
 
 	/**
@@ -83,8 +91,7 @@ public class Client extends AbstractScriptedSimpleTest {
 	 */
 	@Override
 	protected Reservation confirmQuote(Quote quote) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
+	    return this.company.confirmQuote(quote);
 	}
 	
 	/**
@@ -99,8 +106,7 @@ public class Client extends AbstractScriptedSimpleTest {
 	 */
 	@Override
 	protected List<Reservation> getReservationsBy(String clientName) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
+		return this.company.getAllReservations(clientName);
 	}
 
 	/**
@@ -115,7 +121,6 @@ public class Client extends AbstractScriptedSimpleTest {
 	 */
 	@Override
 	protected int getNumberOfReservationsForCarType(String carType) throws Exception {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("TODO");
-	}
+        return this.company.getNumberOfReservationsForCarType(carType);
+    }
 }
