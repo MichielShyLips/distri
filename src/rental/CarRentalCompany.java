@@ -1,5 +1,6 @@
 package rental;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.logging.Level;

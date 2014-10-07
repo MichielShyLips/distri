@@ -3,6 +3,7 @@ package rental;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -21,7 +22,7 @@ public class RentalServer {
 
         ICarRentalCompany stub = (ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
 
-        Registry registry = LocateRegistry.getRegistry();
+        Registry registry = LocateRegistry.getRegistry(1099);
         registry.rebind(company.getName(), stub);
 	}
 
