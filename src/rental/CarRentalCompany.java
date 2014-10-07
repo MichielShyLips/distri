@@ -47,14 +47,12 @@ public class CarRentalCompany implements ICarRentalCompany {
 		return carTypes.values();
 	}
 	
-	@Override
     public CarType getCarType(String carTypeName) {
 		if(carTypes.containsKey(carTypeName))
 			return carTypes.get(carTypeName);
 		throw new IllegalArgumentException("<" + carTypeName + "> No car type of name " + carTypeName);
 	}
 	
-	@Override
     public boolean isAvailable(String carTypeName, Date start, Date end) {
 		logger.log(Level.INFO, "<{0}> Checking availability for car type {1}", new Object[]{name, carTypeName});
 		if(carTypes.containsKey(carTypeName))
