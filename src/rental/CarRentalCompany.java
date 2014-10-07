@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CarRentalCompany {
+public class CarRentalCompany implements ICarRentalCompany {
 
 	private static Logger logger = Logger.getLogger(CarRentalCompany.class.getName());
 	
@@ -35,7 +35,8 @@ public class CarRentalCompany {
 	 * NAME *
 	 ********/
 
-	public String getName() {
+	@Override
+    public String getName() {
 		return name;
 	}
 
@@ -47,24 +48,28 @@ public class CarRentalCompany {
 	 * CAR TYPES *
 	 *************/
 
-	public Collection<CarType> getAllCarTypes() {
+	@Override
+    public Collection<CarType> getAllCarTypes() {
 		return carTypes.values();
 	}
 	
-	public CarType getCarType(String carTypeName) {
+	@Override
+    public CarType getCarType(String carTypeName) {
 		if(carTypes.containsKey(carTypeName))
 			return carTypes.get(carTypeName);
 		throw new IllegalArgumentException("<" + carTypeName + "> No car type of name " + carTypeName);
 	}
 	
-	public boolean isAvailable(String carTypeName, Date start, Date end) {
+	@Override
+    public boolean isAvailable(String carTypeName, Date start, Date end) {
 		logger.log(Level.INFO, "<{0}> Checking availability for car type {1}", new Object[]{name, carTypeName});
 		if(carTypes.containsKey(carTypeName))
 			return getAvailableCarTypes(start, end).contains(carTypes.get(carTypeName));
 		throw new IllegalArgumentException("<" + carTypeName + "> No car type of name " + carTypeName);
 	}
 	
-	public Set<CarType> getAvailableCarTypes(Date start, Date end) {
+	@Override
+    public Set<CarType> getAvailableCarTypes(Date start, Date end) {
 		Set<CarType> availableCarTypes = new HashSet<CarType>();
 		for (Car car : cars) {
 			if (car.isAvailable(start, end)) {
@@ -100,7 +105,8 @@ public class CarRentalCompany {
 	 * RESERVATIONS *
 	 ****************/
 
-	public Quote createQuote(ReservationConstraints constraints, String client)
+	@Override
+    public Quote createQuote(ReservationConstraints constraints, String client)
 			throws ReservationException {
 		logger.log(Level.INFO, "<{0}> Creating tentative reservation for {1} with constraints {2}", 
                         new Object[]{name, client, constraints.toString()});
@@ -122,7 +128,8 @@ public class CarRentalCompany {
 						/ (1000 * 60 * 60 * 24D));
 	}
 
-	public Reservation confirmQuote(Quote quote) throws ReservationException {
+	@Override
+    public Reservation confirmQuote(Quote quote) throws ReservationException {
 		logger.log(Level.INFO, "<{0}> Reservation of {1}", new Object[]{name, quote.toString()});
 		List<Car> availableCars = getAvailableCars(quote.getCarType(), quote.getStartDate(), quote.getEndDate());
 		if(availableCars.isEmpty())
@@ -135,7 +142,8 @@ public class CarRentalCompany {
 		return res;
 	}
 
-	public void cancelReservation(Reservation res) {
+	@Override
+    public void cancelReservation(Reservation res) {
 		logger.log(Level.INFO, "<{0}> Cancelling reservation {1}", new Object[]{name, res.toString()});
 		getCar(res.getCarId()).removeReservation(res);
 	}
