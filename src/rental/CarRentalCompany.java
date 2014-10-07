@@ -1,5 +1,6 @@
 package rental;
 
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -147,4 +148,9 @@ public class CarRentalCompany implements ICarRentalCompany {
 		logger.log(Level.INFO, "<{0}> Cancelling reservation {1}", new Object[]{name, res.toString()});
 		getCar(res.getCarId()).removeReservation(res);
 	}
+
+    @Override
+    public Collection<Reservation> getAllReservations(String client) throws RemoteException {
+        throw new UnsupportedOperationException("TODO");
+    }
 }
