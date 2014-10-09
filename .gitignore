@@ -1,3 +1,4 @@
 .idea/
 distri.xml
 **/*.iml
+*.iml
