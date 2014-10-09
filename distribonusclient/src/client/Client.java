@@ -18,12 +18,12 @@ public class Client extends AbstractScriptedSimpleTest {
 	public static void main(String[] args) throws Exception {
 		
 		String carRentalCompanyName = "Hertz";
-		
-		// An example reservation scenario on car rental company 'Hertz' would be...
-		Client client = new Client("src/simpleTrips", carRentalCompanyName);
-		client.run();
 
         System.setSecurityManager(null);
+
+        // An example reservation scenario on car rental company 'Hertz' would be...
+		Client client = new Client("src/simpleTrips", carRentalCompanyName);
+		client.run();
 	}
 	
 	/***************

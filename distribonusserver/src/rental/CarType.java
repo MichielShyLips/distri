@@ -26,7 +26,7 @@ public class CarType implements Serializable{
     public String getName() {
     	return name;
     }
-    
+
     public int getNbOfSeats() {
         return nbOfSeats;
     }
