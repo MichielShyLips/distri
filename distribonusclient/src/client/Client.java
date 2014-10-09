@@ -19,12 +19,12 @@ public class Client extends AbstractScriptedSimpleTest {
 		
 		String carRentalCompanyName = "Hertz";
 
-        System.setSecurityManager(null);
-
         // An example reservation scenario on car rental company 'Hertz' would be...
 		Client client = new Client("src/simpleTrips", carRentalCompanyName);
 		client.run();
-	}
+
+        System.setSecurityManager(null);
+    }
 	
 	/***************
 	 * CONSTRUCTOR *
@@ -32,7 +32,7 @@ public class Client extends AbstractScriptedSimpleTest {
 	
 	public Client(String scriptFile, String carRentalCompanyName) throws RemoteException,NotBoundException{
 		super(scriptFile);
-        Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+        Registry registry = LocateRegistry.getRegistry("localhost");
         this.company = (ICarRentalCompany) registry.lookup(carRentalCompanyName);
 	}
 	

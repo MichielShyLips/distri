@@ -20,7 +20,7 @@ public class RentalServer {
 
         ICarRentalCompany stub = (ICarRentalCompany) UnicastRemoteObject.exportObject(company, 0);
 
-        Registry registry = LocateRegistry.getRegistry(1099);
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1");
         registry.rebind(company.getName(), stub);
 	}
 
